@@ -28,7 +28,6 @@ pub fn print_event_round(id: &str, event: &str, round: usize, max_group_size: us
 mod test {
     #[test]
     fn everything() {
-        assert_eq!(2 + 2, 4);
-        assert_ne!(2 + 3, 4);
+        crate::print_subsequent_rounds("dastrupsleepover2022".to_string());
     }
 }
