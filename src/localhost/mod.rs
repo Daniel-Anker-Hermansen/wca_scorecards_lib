@@ -17,6 +17,7 @@ pub fn init(id: String) {
 
     let local_wcif = wcif.clone();
     let local_id = id.clone();
+    let local_id2 = local_id.clone();
     //Handling the get request from authentification. HTTP no s, super secure, everything is awesome. The API said that https is not required for localhost so it is fine.
     let root = warp::path::end()
         .and(warp::query::query())
@@ -66,7 +67,7 @@ pub fn init(id: String) {
             let bytes = crate::pdf::run_from_wcif(wcif, eventid, round, 20);
             
             let response = Response::builder()
-                .header("content-disposition", "attachment; filename=\"test.pdf\"")
+                .header("content-disposition", format!("attachment; filename=\"{}{}{}.pdf\"", local_id2, eventid, round))
                 .body(bytes);
             return response;
         })
