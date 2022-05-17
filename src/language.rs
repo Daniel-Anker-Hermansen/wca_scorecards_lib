@@ -59,7 +59,7 @@ impl Language {
             e333bf: format!("3x3x3 Blindfolded"), 
             e444bf: format!("4x4x4 Blindfolded"), 
             e555bf: format!("5x5x5 Blindfolded"), 
-            e333mbf: format!("Multiple Blindfolded"), 
+            e333mbf: format!("3x3x3 Multi-Blind"), 
             esq1: format!("Square 1"), 
             eskewb: format!("Skewb")
         }

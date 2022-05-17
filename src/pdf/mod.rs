@@ -84,11 +84,11 @@ pub fn run<I>(args: &mut I, language: Language) where I: Iterator<Item = String>
     });
     let mut competition_option = args.next();
     let competition = match competition_option {
-        None => "No competion name given",
+        None => panic!("No competion name given"),
         Some(ref mut v) => v.as_str()
     };
     let doc = scorecards_to_pdf(k, competition, &map, &limits, language);
-    doc.save(&mut BufWriter::new(File::create(competition.split_ascii_whitespace().collect::<String>() + ".pdf").unwrap())).unwrap();
+    doc.save(&mut BufWriter::new(File::create(competition.split_ascii_whitespace().collect::<String>() + "_scorecards.pdf").unwrap())).unwrap();
 }
 
 pub fn run_from_wcif(wcif: Wcif, event: &str, round: usize, max_group_size: usize) -> Vec<u8> {
