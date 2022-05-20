@@ -16,8 +16,6 @@ pub fn init(id: String) {
     let wcif: Arc<Mutex<Option<String>>> = Arc::new(Mutex::new(None));
 
     let local_wcif = wcif.clone();
-    let local_id = id.clone();
-    let local_id2 = local_id.clone();
     //Handling the get request from authentification. HTTP no s, super secure, everything is awesome. The API said that https is not required for localhost so it is fine.
     let root = warp::path::end()
         .and(warp::query::query())
@@ -44,7 +42,7 @@ pub fn init(id: String) {
                     let json = (*wcif_guard).clone().unwrap();
                     drop(wcif_guard);
                     let wcif = parse(json);
-                    let body = format!("{}", event_list_to_html(&local_id.clone(), get_rounds(wcif)));
+                    let body = format!("{}", event_list_to_html(get_rounds(wcif)));
                     let response = Response::builder()
                         .header("content-type", "text/html")
                         .body(body);
