@@ -1,6 +1,10 @@
 [package]
 name = "wca_scorecards_lib"
+<<<<<<< HEAD
 version = "0.2.2"
+=======
+version = "0.2.1"
+>>>>>>> 1e9f10c5317b9ddc37030ef8e95cdb58db5eb7c1
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
