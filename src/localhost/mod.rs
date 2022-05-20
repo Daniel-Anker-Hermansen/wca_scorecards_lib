@@ -31,8 +31,10 @@ pub fn init(id: String) {
                     let json = oauth.get_wcif(id.as_str());
                     let mut wcif_guard = wcif_clone.lock().unwrap();
                     *wcif_guard = json.clone();
+                    drop(wcif_guard);
                     let mut guard = code_clone.lock().unwrap();
                     *guard = Some(oauth);
+                    drop(guard);
                 });
             });
             loop {
@@ -40,6 +42,7 @@ pub fn init(id: String) {
                 let wcif_guard = wcif.lock().unwrap();
                 if (*wcif_guard).is_some() {
                     let json = (*wcif_guard).clone().unwrap();
+                    drop(wcif_guard);
                     let wcif = parse(json);
                     let body = format!("{}", event_list_to_html(&local_id.clone(), get_rounds(wcif)));
                     let response = Response::builder()
@@ -63,11 +66,12 @@ pub fn init(id: String) {
             });
             let wcif_guard = local_wcif.lock().unwrap();
             let json = (*wcif_guard).clone().unwrap();
+            drop(wcif_guard);
             let wcif = parse(json);
             let bytes = crate::pdf::run_from_wcif(wcif, eventid, round, 20);
             
             let response = Response::builder()
-                .header("content-disposition", format!("attachment; filename=\"{}{}{}.pdf\"", local_id2, eventid, round))
+                .header("content-type", "application/pdf")
                 .body(bytes);
             return response;
         })
@@ -95,6 +99,7 @@ pub fn init(id: String) {
         let mut guard = is_hosting.lock().unwrap();
         if *guard {
             *guard = false;
+            drop(guard);
 
             //Try opening in browser. In case of fail write the url to the terminal
             match open::that(auth_url) {
