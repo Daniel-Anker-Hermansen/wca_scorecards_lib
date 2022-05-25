@@ -1,15 +1,15 @@
 use font_kit::{family_name::FamilyName, properties::Weight};
 use printpdf::{PdfDocumentReference, PdfDocument, Mm, Point, Line, LineDashPattern, Color, Greyscale, PdfLayerReference};
-use std::{collections::HashMap};
+use std::collections::HashMap;
 use crate::language::Language;
 use super::font::{load_fonts, FontWidth, FontPDF};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Scorecard<'a> {
     pub event: &'a str,
-    pub round: i8,
-    pub group: i8,
-    pub station: i8,
+    pub round: usize,
+    pub group: usize,
+    pub station: Option<usize>,
     pub id: usize,
 }
 
@@ -87,7 +87,7 @@ pub fn scorecards_to_pdf(scorecards: Vec<Scorecard>, competition: &str, map: &Ha
 
 fn line_from_points(points: Vec<(Point, bool)>) -> Line {
     Line {
-        points: points,
+        points,
         is_closed: false,
         has_fill: false,
         has_stroke: true,
@@ -154,7 +154,11 @@ fn draw_scorecard(number: i8, Scorecard { id, round, group, station, event }: &S
     };
 
     write_text(&limit, Alignment::Right, 100.0, 94.0, 7.0);
-    write_bold_text(station.to_string().as_str(), Alignment::Right, 100.0, 12.0, 25.0);
+    let tmp = station.map(|v|v.to_string());
+    write_bold_text(match tmp {
+        None => "",
+        Some(ref v) => v
+    }, Alignment::Right, 100.0, 12.0, 25.0);
 }
 
 fn time_string(mut z: usize) -> String {
@@ -204,7 +208,7 @@ fn get_funcs<'a>(number: i8, font_path: &'a FontWidth, current_layer: &'a PdfLay
         (Point::new(Mm(x + x1 + width), Mm(y - y1 - height)), false),
         (Point::new(Mm(x + x1), Mm(y - y1 - height)), false)];
         let square = Line {
-            points: points,
+            points,
             is_closed: true,
             has_fill: false,
             has_stroke: true,

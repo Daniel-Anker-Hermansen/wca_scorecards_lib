@@ -52,7 +52,7 @@ impl Language {
             e666: format!("6x6x6 Cube"), 
             e777: format!("7x7x7 Cube"), 
             e222: format!("2x2x2 Cube"), 
-            e333oh: format!("3x3x3 Cube One Handed"), 
+            e333oh: format!("3x3x3 One Handed"), 
             eclock: format!("Clock"), 
             eminx: format!("Megaminx"), 
             epyram: format!("Pyraminx"), 
