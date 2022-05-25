@@ -2,6 +2,7 @@ use printpdf::{PdfDocumentReference, PdfDocument, Mm, Point, Line, LineDashPatte
 use std::collections::HashMap;
 use crate::language::Language;
 use super::font::{load_fonts, FontWidth, FontPDF};
+use self::Alignment::{Centered, Left, Right};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Scorecard<'a> {
@@ -99,16 +100,16 @@ fn draw_scorecard(number: i8, Scorecard { id, round, group, station, event }: &S
     let (write_bold_text, _) = get_funcs(number, font2_bold, current_layer, font_bold);
     let get_event = get_event_func(language);
     //Competiton
-    write_text(competition, Alignment::Centered, 52.5, 7.0, 10.0);
+    write_text(competition, Centered, 52.5, 7.0, 10.0);
     let (round_text, event_text, group_text) = (format!("{}: {} | ", language.round, round), format!("{}", get_event(event)), format!(" | {}: {}", language.group, group));
     let (round_width, event_width, group_width) = (get_width_of_string(font2, &round_text, 10.0), get_width_of_string(font2_bold, &event_text, 10.0), get_width_of_string(font2, &group_text, 10.0));
-    write_text(&round_text, Alignment::Left, 52.5 - (round_width + event_width + group_width) / 2.0, 11.5, 10.0);
-    write_bold_text(&event_text, Alignment::Left, 52.5 - (- round_width + event_width + group_width) / 2.0, 11.5, 10.0);
-    write_text(&group_text, Alignment::Left, 52.5 - (- round_width - event_width + group_width) / 2.0, 11.5, 10.0);
+    write_text(&round_text, Left, 52.5 - (round_width + event_width + group_width) / 2.0, 11.5, 10.0);
+    write_bold_text(&event_text, Left, 52.5 - (- round_width + event_width + group_width) / 2.0, 11.5, 10.0);
+    write_text(&group_text, Left, 52.5 - (- round_width - event_width + group_width) / 2.0, 11.5, 10.0);
     draw_square(5.0, 15.0, 10.0, 5.5);
-    write_text(id.to_string().as_str(), Alignment::Centered, 10.0, 19.0, 10.0);
+    write_text(id.to_string().as_str(), Centered, 10.0, 19.0, 10.0);
     draw_square(15.0, 15.0, 85.0, 5.5);
-    write_text(&map[id], Alignment::Left, 16.0, 19.0, 10.0);
+    write_text(&map[id], Left, 16.0, 19.0, 10.0);
 
     let attempts_amount = match *event {
         "666" | "777" | "333mbf" | "333bf" | "444bf" | "555bf" => 3,
@@ -119,25 +120,25 @@ fn draw_scorecard(number: i8, Scorecard { id, round, group, station, event }: &S
     let distance = 8.8;
     let sign_box_width = 10.0;
     let mut attempts_start_height = 25.5;
-    write_text(&language.scram, Alignment::Centered, 9.0 + sign_box_width / 2.0, attempts_start_height - 1.0, 7.0);
-    write_text(&language.result, Alignment::Centered, (12.0 + 97.0 - sign_box_width) / 2.0, attempts_start_height - 1.0, 7.0);
-    write_text(&language.judge, Alignment::Centered, 100.0 - sign_box_width - (sign_box_width / 2.0), attempts_start_height - 1.0, 7.0);
-    write_text(&language.comp, Alignment::Centered, 100.0 - (sign_box_width / 2.0), attempts_start_height - 1.0, 7.0);
+    write_text(&language.scram, Centered, 9.0 + sign_box_width / 2.0, attempts_start_height - 1.0, 7.0);
+    write_text(&language.result, Centered, (12.0 + 97.0 - sign_box_width) / 2.0, attempts_start_height - 1.0, 7.0);
+    write_text(&language.judge, Centered, 100.0 - sign_box_width - (sign_box_width / 2.0), attempts_start_height - 1.0, 7.0);
+    write_text(&language.comp, Centered, 100.0 - (sign_box_width / 2.0), attempts_start_height - 1.0, 7.0);
     for i in 0..attempts_amount {
         let j = i as f64;
         draw_square(9.0, attempts_start_height + j * distance, sign_box_width, height);
-        write_text((i + 1).to_string().as_str(), Alignment::Left, 5.0, attempts_start_height - 2.0 + j * distance + height, 12.0);
+        write_text((i + 1).to_string().as_str(), Left, 5.0, attempts_start_height - 2.0 + j * distance + height, 12.0);
         draw_square(9.0 + sign_box_width, attempts_start_height + j * distance, 91.0 - 3.0 * sign_box_width, height);
         draw_square(100.0 - 2.0 * sign_box_width, attempts_start_height + j * distance, sign_box_width, height);
         draw_square(100.0 - sign_box_width, attempts_start_height + j * distance, sign_box_width, height);
     }
 
     attempts_start_height += attempts_amount as f64 * distance + 3.8;
-    write_text(&language.extra_attempts, Alignment::Centered, 52.5, attempts_start_height - 1.0, 7.0);
+    write_text(&language.extra_attempts, Centered, 52.5, attempts_start_height - 1.0, 7.0);
     for i in 0..2 {
         let j = i as f64;
         draw_square(9.0, attempts_start_height + j * distance, sign_box_width, height);
-        write_text("_", Alignment::Left, 5.0, attempts_start_height - 2.0 + j * distance + height, 12.0);
+        write_text("_", Left, 5.0, attempts_start_height - 2.0 + j * distance + height, 12.0);
         draw_square(9.0 + sign_box_width, attempts_start_height + j * distance, 91.0 - 3.0 * sign_box_width, height);
         draw_square(100.0 - 2.0 * sign_box_width, attempts_start_height + j * distance, sign_box_width, height);
         draw_square(100.0 - sign_box_width, attempts_start_height + j * distance, sign_box_width, height);
@@ -152,12 +153,12 @@ fn draw_scorecard(number: i8, Scorecard { id, round, group, station, event }: &S
         TimeLimit::None => format!("")
     };
 
-    write_text(&limit, Alignment::Right, 100.0, 94.0, 7.0);
+    write_text(&limit, Right, 100.0, 94.0, 7.0);
     let tmp = station.map(|v|v.to_string());
     write_bold_text(match tmp {
         None => "",
         Some(ref v) => v
-    }, Alignment::Right, 100.0, 12.0, 25.0);
+    }, Right, 100.0, 12.0, 25.0);
 }
 
 fn time_string(mut z: usize) -> String {
@@ -193,9 +194,9 @@ fn get_funcs<'a>(number: i8, font_path: &'a FontWidth, current_layer: &'a PdfLay
         current_layer.begin_text_section();
             current_layer.set_font(font, font_size);
             current_layer.set_text_cursor(Mm(match alignment {
-                Alignment::Left => x + x1,
-                Alignment::Centered => x + x1 - (get_width_of_string(font_path ,text, font_size) / 2.0),
-                Alignment::Right => x + x1 - get_width_of_string(font_path ,text, font_size)
+                Left => x + x1,
+                Centered => x + x1 - (get_width_of_string(font_path ,text, font_size) / 2.0),
+                Right => x + x1 - get_width_of_string(font_path ,text, font_size)
             }), Mm(y - y1));
             current_layer.set_line_height(12.0);
             current_layer.write_text(text, font);
