@@ -1,4 +1,3 @@
-use font_kit::{family_name::FamilyName, properties::Weight};
 use printpdf::{PdfDocumentReference, PdfDocument, Mm, Point, Line, LineDashPattern, Color, Greyscale, PdfLayerReference};
 use std::collections::HashMap;
 use crate::language::Language;
@@ -69,8 +68,8 @@ pub fn scorecards_to_pdf(scorecards: Vec<Scorecard>, competition: &str, map: &Ha
         current_layer.add_shape(line2);
         current_layer.add_shape(line3);
 
-        let (font_width, font) = load_fonts(&doc, FamilyName::SansSerif, Weight::NORMAL);
-        let (font_width_bold, font_bold) = load_fonts(&doc, FamilyName::SansSerif, Weight::BOLD);
+        let (font_width, font) = load_fonts(&doc, "normal");
+        let (font_width_bold, font_bold) = load_fonts(&doc, "bold");
         
         let dash_pattern = LineDashPattern::new(0, None, None, None, None, None, None);
         current_layer.set_line_dash_pattern(dash_pattern);

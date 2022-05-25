@@ -1,30 +1,21 @@
-use font_kit::family_name::FamilyName;
-use font_kit::handle::Handle;
 use font_kit::loaders::default::Font;
-use font_kit::properties::{Properties, Style, Weight};
-use font_kit::source::SystemSource;
 use printpdf::{IndirectFontRef, PdfDocumentReference};
-use std::fs::File;
+use std::sync::Arc;
 
 pub type FontWidth = Font;
 pub type FontPDF = IndirectFontRef;
 
-pub fn load_fonts(doc: &PdfDocumentReference, family: FamilyName, weight: Weight) -> (FontWidth, FontPDF) {
-    let handle = SystemSource::new().select_best_match(&[family],
-        &Properties::new().style(Style::Normal).weight(weight))
-        .unwrap();
+const NORMAL: &[u8] = include_bytes!("../../dependencies/Helvetica.ttf");
+const BOLD: &[u8] = include_bytes!("../../dependencies/Helvetica-Bold.ttf");
 
-    let font = match &handle {
-        Handle::Path {
-            path,
-            ..
-        } => doc.add_external_font(&File::open(path).unwrap()).unwrap(),
-        Handle::Memory {
-            ..
-        } => panic!("Let's hope it finds the path")
+pub fn load_fonts(doc: &PdfDocumentReference, weight: &str) -> (FontWidth, FontPDF) {
+    let bytes = match weight {
+        "normal" => NORMAL,
+        "bold" => BOLD,
+        _ => NORMAL
     };
-
-    let font_width = handle.load().unwrap();
+    let font_width = Font::from_bytes(Arc::new(bytes.to_vec()), 0).unwrap();
+    let font = doc.add_external_font(bytes).unwrap();
 
     (font_width, font)
 }
