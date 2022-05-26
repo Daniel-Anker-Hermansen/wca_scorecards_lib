@@ -46,6 +46,9 @@ pub fn scorecards_to_pdf(scorecards: Vec<Scorecard>, competition: &str, map: &Ha
         pages.push((page, layer));
     }
     let pages = pages.into_iter().zip(scorecard_pages);
+
+    let (font_width, font) = load_fonts(&doc, "normal");
+    let (font_width_bold, font_bold) = load_fonts(&doc, "bold");
     for ((page, layer), scorecards) in pages {
         let current_layer = doc.get_page(page).get_layer(layer);
         let points1 = vec![(Point::new(Mm(105.0), Mm(0.0)), false),
@@ -68,9 +71,6 @@ pub fn scorecards_to_pdf(scorecards: Vec<Scorecard>, competition: &str, map: &Ha
         current_layer.add_shape(line1);
         current_layer.add_shape(line2);
         current_layer.add_shape(line3);
-
-        let (font_width, font) = load_fonts(&doc, "normal");
-        let (font_width_bold, font_bold) = load_fonts(&doc, "bold");
         
         let dash_pattern = LineDashPattern::new(0, None, None, None, None, None, None);
         current_layer.set_line_dash_pattern(dash_pattern);
