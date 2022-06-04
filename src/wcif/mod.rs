@@ -83,10 +83,10 @@ fn get_advancement_ids(round: &Round, advancement_condition: &Option<Advancement
     match advancement_amount {
         None => return vec![],
         Some(advancement_amount) => {
-            let filtered = round.results.iter().filter(|result| result.ranking <= advancement_amount).collect::<Vec<_>>();
+            let filtered = round.results.iter().filter(|result| result.ranking.unwrap() <= advancement_amount).collect::<Vec<_>>();
             if filtered.len() > advancement_amount {
-                let not_included = filtered.last().unwrap().ranking;
-                return filtered.iter().filter(|result| result.ranking != not_included).map(|result| result.person_id).collect();
+                let not_included = filtered.last().unwrap().ranking.unwrap();
+                return filtered.iter().filter(|result| result.ranking.unwrap() != not_included).map(|result| result.person_id).collect();
             }
             filtered.iter().map(|result| result.person_id).collect()
         }

@@ -34,7 +34,7 @@ pub fn print_event_round(id: &str, event: &str, round: usize, max_group_size: us
 mod test {
     #[test]
     fn everything() {
-        crate::print_round_1(&mut ["files/OstervangOpen2022stationNumbers.csv", "files/OstervangOpen2022timeLimits.csv", "Østervang Open 2022"].map(|x|x.to_string()).into_iter());
-        //crate::print_subsequent_rounds("dastrupsleepover2022".to_string());
+        //crate::print_round_1(&mut ["files/OstervangOpen2022stationNumbers.csv", "files/OstervangOpen2022timeLimits.csv", "Østervang Open 2022"].map(|x|x.to_string()).into_iter());
+        crate::print_subsequent_rounds("ostervangopen2022".to_string());
     }
 }

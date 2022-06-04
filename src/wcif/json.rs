@@ -56,7 +56,7 @@ pub enum AdvancementCondition {
 #[serde(rename_all = "camelCase")]
 pub struct Result {
     pub person_id: usize,
-    pub ranking: usize,
+    pub ranking: Option<usize>,
     pub average: isize
 }
 
