@@ -28,7 +28,9 @@ pub fn print_subsequent_rounds(competition_id: String) {
 }
 
 pub fn print_round_1_english(groups_csv: &str, limit_csv: &str, competition: &str) {
-    run(groups_csv, limit_csv, competition, Language::english())
+    let groups_csv = std::fs::read_to_string(groups_csv).unwrap();
+    let limit_csv = std::fs::read_to_string(limit_csv).unwrap();
+    run(&groups_csv, &limit_csv, competition, Language::english())
 }
 
 #[cfg(test)]
