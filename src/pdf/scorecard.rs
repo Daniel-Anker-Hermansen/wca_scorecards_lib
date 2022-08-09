@@ -153,7 +153,9 @@ fn draw_scorecard(number: i8, Scorecard { id, round, group, station, event }: &S
         TimeLimit::None => format!("")
     };
 
-    write_text(&limit, Right, 100.0, 94.0, 7.0);
+    if get_width_of_string(&font2, &limit, 7.0) <= 95.0 {
+        write_text(&limit, Right, 100.0, 94.0, 7.0);
+    }
     let tmp = station.map(|v|v.to_string());
     write_bold_text(match tmp {
         None => "",
